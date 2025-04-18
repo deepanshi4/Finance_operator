@@ -3,7 +3,7 @@ Finance Operator is an intelligent financial management solution built with Pyth
 
 This tool provides powerful budget analysis capabilities with a focus on visual representations that make understanding your financial patterns intuitive and actionable. Track expenses across categories, visualize spending evolution, and identify savings opportunities - all through clean, professional data visualizations.
 
-#✨ Key Capabilities
+#✨ Key Capabilities #
 
 Smart Budget Analysis - Automated expense tracking with intelligent categorization
 Visual Financial Story - Transform raw numbers into compelling visual insights
