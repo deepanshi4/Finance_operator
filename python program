@@ -1,0 +1,106 @@
+import matplotlib.pyplot as plt
+from datetime import datetime
+
+class Budget:
+    def __init__(self, budget):
+        self.budget = budget
+        self.budget_history = {
+            'expense_value': [], 
+            'expense_category': [], 
+            'expense_date': []
+        }
+    
+    def addExpense(self, expense, category, date):
+        self.budget_history['expense_value'].append(expense)
+        self.budget_history['expense_category'].append(category)
+        self.budget_history['expense_date'].append(date)
+    
+    def plotExpenseEvolution(self):
+        X = [x.day for x in self.budget_history['expense_date']]
+        Y = self.budget_history['expense_value']
+        
+        plt.figure(figsize=(10, 6))
+        plt.plot(X, Y, '-o', color='red')
+        plt.xlabel('Day of month')
+        plt.ylabel('Expense amount in INR')
+        plt.title('Expense Overview - April 2024')
+        plt.grid(True, linestyle='--', alpha=0.7)
+        plt.xticks(X)
+    
+    def plotExpenseAllocation(self):
+        plt.figure(figsize=(10, 6))
+        expense_categories = self.budget_history['expense_category']
+        expense_values = self.budget_history['expense_value']
+        
+        colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0']
+        
+        plt.pie(
+            expense_values, 
+            labels=expense_categories, 
+            autopct='%1.1f%%',
+            colors=colors
+        )
+        plt.title('Expense Allocation - April 2024')
+    
+    def calculate_remaining(self):
+        total_expenses = sum(self.budget_history['expense_value'])
+        remaining = self.budget - total_expenses
+        return remaining
+    
+    def plot_budget_breakdown(self):
+        plt.figure(figsize=(12, 6))
+        
+        categories = self.budget_history['expense_category'] + ['Savings']
+        values = self.budget_history['expense_value'] + [self.calculate_remaining()]
+        
+        # Generate distinct colors for each category
+        colors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#7fc97f']
+        
+        plt.bar(categories, values, color=colors)
+        plt.ylabel('Amount in INR')
+        plt.title('Budget Breakdown - April 2024')
+        plt.xticks(rotation=45, ha='right')
+        
+        # Add values on top of bars
+        for i, v in enumerate(values):
+            plt.text(i, v + 200, f"₹{v}", ha='center')
+            
+        plt.tight_layout()
+        plt.grid(True, linestyle='--', alpha=0.7, axis='y')
+
+
+def main():
+    # Monthly budget
+    monthly_budget = 20000
+    myBudget = Budget(budget=monthly_budget)
+    
+    # Adding expenses
+    myBudget.addExpense(8700, 'PG Rent', datetime(2024, 4, 8))
+    myBudget.addExpense(6500, 'Education Loan', datetime(2024, 4, 10))
+    myBudget.addExpense(1000, 'Transportation', datetime(2024, 4, 12))
+    myBudget.addExpense(1200, 'Food & Others', datetime(2024, 4, 14))
+    myBudget.addExpense(800, 'Phone Recharge', datetime(2024, 4, 16))
+    
+    # Calculate savings
+    savings = myBudget.calculate_remaining()
+    
+    # Print financial summary
+    print(f"Financial Summary for April 2024:")
+    print(f"Monthly Budget: ₹{monthly_budget}")
+    print(f"Total Expenses: ₹{sum(myBudget.budget_history['expense_value'])}")
+    print(f"Monthly Savings: ₹{savings}")
+    
+    # Plotting expenses evolution
+    myBudget.plotExpenseEvolution()
+    plt.show()
+    
+    # Plotting expense allocation
+    myBudget.plotExpenseAllocation()
+    plt.show()
+    
+    # Plotting budget breakdown including savings
+    myBudget.plot_budget_breakdown()
+    plt.show()
+
+if __name__ == "__main__":
+    main()
